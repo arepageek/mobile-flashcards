@@ -1,22 +1,34 @@
 import React, { Component } from "react";
-import { View, Text, FlatList, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  FlatList,
+  StyleSheet,
+  TouchableOpacity
+} from "react-native";
 import { connect } from "react-redux";
 import { fetchDecks } from "../utils/api";
 import { getDecks } from "../actions";
 import { gray } from "../utils/colors";
 
-function RenderItems({ item }) {
-  return (
-    <View style={styles.deck}>
-      <Text style={styles.title}>{item.title}</Text>
-      <Text style={styles.questions}>Questions: {item.questions.length}</Text>
-    </View>
-  );
-}
 class DeckList extends Component {
   componentDidMount() {
     fetchDecks().then(deck => this.props.dispatch(getDecks(deck)));
   }
+  RenderItems = ({ item }) => {
+    return (
+      <View style={styles.deck}>
+        <TouchableOpacity
+          onPress={() => this.props.navigation.navigate("Deck", item)}
+        >
+          <Text style={styles.title}>{item.title}</Text>
+          <Text style={styles.questions}>
+            Questions: {item.questions.length}
+          </Text>
+        </TouchableOpacity>
+      </View>
+    );
+  };
   render() {
     let data = Object.values(this.props.decks).sort(
       (a, b) => a.title > b.title
@@ -25,7 +37,7 @@ class DeckList extends Component {
       <View>
         <FlatList
           data={data}
-          renderItem={RenderItems}
+          renderItem={this.RenderItems}
           keyExtractor={(item, index) => index}
         />
       </View>

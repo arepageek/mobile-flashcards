@@ -50,7 +50,7 @@ class AddDeck extends Component {
     return (
       <KeyboardAvoidingView behavior="padding" style={styles.container}>
         <Text style={{ fontSize: 30, color: purple }}>
-          What is the title of your new deck?sss
+          What is the title of your new deck?
         </Text>
         <TextInput
           style={styles.input}

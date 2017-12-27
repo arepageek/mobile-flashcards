@@ -45,3 +45,18 @@ export function fetchDecks() {
     return decks === null ? emptyDecks() : JSON.parse(decks);
   });
 }
+
+export function addCard({ card, title }) {
+  return AsyncStorage.getItem(MOBILE_FLASHCARDS_STORAGE, (err, result) => {
+    const decks = JSON.parse(result);
+
+    const newQuestions = JSON.parse(JSON.stringify(decks[title].questions));
+    newQuestions[newQuestions.length] = card;
+
+    const value = JSON.stringify({
+      [title]: { title: title, questions: newQuestions }
+    });
+
+    AsyncStorage.mergeItem(MOBILE_FLASHCARDS_STORAGE, value);
+  });
+}
