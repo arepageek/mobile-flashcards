@@ -4,8 +4,10 @@ import {
   KeyboardAvoidingView,
   Text,
   TextInput,
-  TouchableOpacity
+  TouchableOpacity,
+  StyleSheet
 } from "react-native";
+import { white, purple } from "../utils/colors";
 import { connect } from "react-redux";
 import { addCard } from "../utils/api";
 import { addDeck } from "../actions";
@@ -13,8 +15,8 @@ import { addDeck } from "../actions";
 function SubmitBtn({ onPress }) {
   return (
     <View>
-      <TouchableOpacity onPress={onPress}>
-        <Text>Submit</Text>
+      <TouchableOpacity onPress={onPress} style={styles.androidBtn}>
+        <Text style={{ color: white }}>Submit</Text>
       </TouchableOpacity>
     </View>
   );
@@ -51,15 +53,12 @@ class AddCard extends Component {
   render() {
     const { question, answer } = this.state;
     return (
-      <KeyboardAvoidingView behavior="padding">
-        <Text>
-          {" "}
-          {JSON.stringify(
-            this.props.decks[this.props.navigation.state.params].questions
-          )}
+      <KeyboardAvoidingView behavior="padding" style={styles.container}>
+        <Text style={{ fontSize: 30, color: purple }}>
+          What is your question?{" "}
         </Text>
-        <Text>What is your question? </Text>
         <TextInput
+          style={styles.input}
           value={question}
           onChangeText={question =>
             this.setState({
@@ -67,8 +66,9 @@ class AddCard extends Component {
             })
           }
         />
-        <Text>What is the answer?</Text>
+        <Text style={{ fontSize: 30, color: purple }}>What is the answer?</Text>
         <TextInput
+          style={styles.input}
           value={answer}
           onChangeText={answer =>
             this.setState({
@@ -82,6 +82,30 @@ class AddCard extends Component {
     );
   }
 }
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: white,
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  androidBtn: {
+    backgroundColor: purple,
+    padding: 10,
+    paddingLeft: 30,
+    paddingRight: 30,
+    borderRadius: 2,
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  input: {
+    width: 300,
+    height: 44,
+    padding: 2,
+    margin: 10,
+    color: purple
+  }
+});
 
 mapStateToProps = state => {
   return {
