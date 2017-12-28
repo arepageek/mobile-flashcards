@@ -1,6 +1,6 @@
 import { AsyncStorage } from "react-native";
 
-export const MOBILE_FLASHCARDS_STORAGE = "mobile:234dfqw3";
+export const MOBILE_FLASHCARDS_STORAGE = "mobileflashcards:storage";
 
 emptyDecks = () => {
   const starterData = {
