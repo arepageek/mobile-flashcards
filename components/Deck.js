@@ -28,7 +28,15 @@ class Deck extends Component {
         >
           <Text style={{ fontSize: 20 }}>Add card</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={[styles.androidBtn, { backgroundColor: red }]}>
+        <TouchableOpacity
+          style={[styles.androidBtn, { backgroundColor: red }]}
+          onPress={() =>
+            this.props.navigation.navigate(
+              "Quiz",
+              this.props.navigation.state.params.title
+            )
+          }
+        >
           <Text style={{ fontSize: 20 }}>Start Quiz</Text>
         </TouchableOpacity>
       </View>
