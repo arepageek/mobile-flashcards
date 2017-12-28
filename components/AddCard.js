@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import {
+  Alert,
   View,
   KeyboardAvoidingView,
   Text,
@@ -11,6 +12,7 @@ import { white, purple } from "../utils/colors";
 import { connect } from "react-redux";
 import { addCard } from "../utils/api";
 import { addDeck } from "../actions";
+import { NavigationAction, NavigationActions } from "react-navigation";
 
 function SubmitBtn({ onPress }) {
   return (
@@ -22,6 +24,11 @@ function SubmitBtn({ onPress }) {
   );
 }
 class AddCard extends Component {
+  static navigationOptions = ({ navigation }) => {
+    return {
+      title: "Adding Card to Deck: " + navigation.state.params
+    };
+  };
   state = {
     question: "",
     answer: ""
@@ -37,18 +44,28 @@ class AddCard extends Component {
         questions: [...this.props.decks[title].questions, card]
       }
     };
-    console.log(card);
-    addCard({ card, title });
+    if (this.notEmpty(question) && this.notEmpty(answer)) {
+      addCard({ card, title });
 
-    this.props.dispatch(addDeck(newDeck));
+      this.props.dispatch(addDeck(newDeck));
 
-    this.setState({
-      question: "",
-      answer: ""
-    });
+      this.setState({
+        question: "",
+        answer: ""
+      });
+
+      this.props.navigation.dispatch(NavigationActions.back());
+    } else {
+      Alert.alert("Invalid", "Question or answer cannot be blank");
+    }
   };
   handleTextChange = text => {
     console.log(decks[title]);
+  };
+  notEmpty = string => {
+    let re = /([^\s])/;
+
+    return re.test(string);
   };
   render() {
     const { question, answer } = this.state;

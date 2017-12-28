@@ -5,10 +5,11 @@ import {
   TextInput,
   StyleSheet,
   TouchableOpacity,
-  Alert
+  Alert,
+  KeyboardAvoidingView
 } from "react-native";
 import { connect } from "react-redux";
-import { white, purple } from "../utils/colors";
+import { white, purple, gray, red, green } from "../utils/colors";
 
 function Question({ question }) {
   return (
@@ -27,6 +28,11 @@ function SubmitBtn({ onPress }) {
   );
 }
 class Quiz extends Component {
+  static navigationOptions = ({ navigation }) => {
+    return {
+      title: "Quiz for: " + navigation.state.params
+    };
+  };
   state = {
     index: 0,
     correct: 0,
@@ -68,19 +74,25 @@ class Quiz extends Component {
   render() {
     const title = this.props.navigation.state.params;
     return (
-      <View style={{ flex: 1, backgroundColor: white }}>
-        <Text>
+      <KeyboardAvoidingView
+        behavior="padding"
+        style={{ flex: 1, backgroundColor: white }}
+      >
+        <Text style={styles.number}>
           {this.state.index + 1} / {this.props.decks[title].questions.length}
         </Text>
-        <Text>{JSON.stringify(this.state)}</Text>
         <View style={styles.container}>
-          <Text>
+          <Text style={{ fontSize: 30, color: purple }}>
             {this.props.decks[title].questions[this.state.index].question}
           </Text>
           {this.state.showCorrect || this.state.showIncorrect ? (
             this.state.showCorrect ? (
               <View>
-                <Text>Correct! </Text>
+                <Text
+                  style={{ fontSize: 40, alignSelf: "center", color: green }}
+                >
+                  Correct
+                </Text>
                 {this.props.decks[title].questions.length ===
                 this.state.index + 1 ? (
                   <View>
@@ -96,28 +108,54 @@ class Quiz extends Component {
                         })
                       }
                     >
-                      <Text> Reset </Text>
+                      <Text style={{ color: purple, fontSize: 50 }}>
+                        Calification : {this.state.correct} /{" "}
+                        {this.props.decks[title].questions.length}
+                      </Text>
+                      <Text
+                        style={{
+                          fontSize: 24,
+                          color: red,
+                          alignSelf: "center"
+                        }}
+                      >
+                        Reset
+                      </Text>
                     </TouchableOpacity>
                   </View>
                 ) : (
                   <View>
-                    <TouchableOpacity onPress={() => this.nextQuestion()}>
-                      <Text>Next Card!</Text>
+                    <TouchableOpacity
+                      onPress={() => this.nextQuestion()}
+                      style={styles.nextBtn}
+                    >
+                      <Text style={{ color: white, fontSize: 18 }}>
+                        Next Card!
+                      </Text>
                     </TouchableOpacity>
                   </View>
                 )}
               </View>
             ) : (
               <View>
-                <Text>Incorrect! </Text>
+                <Text style={{ fontSize: 40, alignSelf: "center", color: red }}>
+                  Incorrect
+                </Text>
                 {!this.state.show ? (
                   <TouchableOpacity
                     onPress={() => this.setState({ show: true })}
                   >
-                    <Text>Show Answer!</Text>
+                    <Text
+                      style={{ fontSize: 20, alignSelf: "center", color: gray }}
+                    >
+                      Show Answer
+                    </Text>
                   </TouchableOpacity>
                 ) : (
-                  <Text>
+                  <Text
+                    style={{ fontSize: 20, color: purple, alignSelf: "center" }}
+                  >
+                    Answer:{" "}
                     {this.props.decks[title].questions[this.state.index].answer}
                   </Text>
                 )}
@@ -136,20 +174,37 @@ class Quiz extends Component {
                         })
                       }
                     >
-                      <Text> Reset </Text>
+                      <Text style={{ color: purple, fontSize: 50 }}>
+                        Calification : {this.state.correct} /{" "}
+                        {this.props.decks[title].questions.length}
+                      </Text>
+                      <Text
+                        style={{
+                          fontSize: 24,
+                          color: red,
+                          alignSelf: "center"
+                        }}
+                      >
+                        Reset
+                      </Text>
                     </TouchableOpacity>
                   </View>
                 ) : (
                   <View>
-                    <TouchableOpacity onPress={() => this.nextQuestion()}>
-                      <Text>Next Card!</Text>
+                    <TouchableOpacity
+                      onPress={() => this.nextQuestion()}
+                      style={styles.nextBtn}
+                    >
+                      <Text style={{ color: white, fontSize: 18 }}>
+                        Next Card!
+                      </Text>
                     </TouchableOpacity>
                   </View>
                 )}
               </View>
             )
           ) : (
-            <View style={styles.container}>
+            <View>
               <TextInput
                 style={styles.input}
                 value={this.state.input}
@@ -159,13 +214,14 @@ class Quiz extends Component {
             </View>
           )}
         </View>
-      </View>
+      </KeyboardAvoidingView>
     );
   }
 }
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     backgroundColor: white,
     alignItems: "center",
     justifyContent: "center"
@@ -173,10 +229,10 @@ const styles = StyleSheet.create({
   androidBtn: {
     backgroundColor: purple,
     padding: 10,
+    margin: 20,
     paddingLeft: 30,
     paddingRight: 30,
     borderRadius: 2,
-    alignSelf: "flex-end",
     justifyContent: "center",
     alignItems: "center"
   },
@@ -186,6 +242,21 @@ const styles = StyleSheet.create({
     padding: 2,
     margin: 10,
     color: purple
+  },
+  number: {
+    fontSize: 24,
+    color: gray,
+    padding: 20
+  },
+  nextBtn: {
+    backgroundColor: green,
+    padding: 10,
+    margin: 20,
+    paddingLeft: 30,
+    paddingRight: 30,
+    borderRadius: 2,
+    justifyContent: "center",
+    alignItems: "center"
   }
 });
 mapStateToProps = state => {

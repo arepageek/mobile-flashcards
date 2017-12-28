@@ -9,7 +9,7 @@ import {
 import { connect } from "react-redux";
 import { fetchDecks } from "../utils/api";
 import { getDecks } from "../actions";
-import { gray } from "../utils/colors";
+import { gray, purple, white } from "../utils/colors";
 
 class DeckList extends Component {
   componentDidMount() {
@@ -22,9 +22,7 @@ class DeckList extends Component {
           onPress={() => this.props.navigation.navigate("Deck", item)}
         >
           <Text style={styles.title}>{item.title}</Text>
-          <Text style={styles.questions}>
-            Questions: {item.questions.length}
-          </Text>
+          <Text style={styles.questions}>Cards: {item.questions.length}</Text>
         </TouchableOpacity>
       </View>
     );
@@ -34,7 +32,7 @@ class DeckList extends Component {
       (a, b) => a.title > b.title
     );
     return (
-      <View>
+      <View style={{ flex: 1, backgroundColor: white }}>
         <FlatList
           data={data}
           renderItem={this.RenderItems}
@@ -57,11 +55,16 @@ const styles = StyleSheet.create({
     borderTopColor: gray
   },
   title: {
-    fontSize: 24
+    fontSize: 24,
+    color: purple,
+    alignItems: "center",
+    justifyContent: "center"
   },
   questions: {
     fontSize: 20,
-    color: gray
+    color: gray,
+    alignItems: "center",
+    justifyContent: "center"
   }
 });
 mapStateToProps = state => {

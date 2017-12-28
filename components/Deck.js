@@ -4,6 +4,13 @@ import { connect } from "react-redux";
 import { white, purple, gray, green, red } from "../utils/colors";
 
 class Deck extends Component {
+  static navigationOptions = ({ navigation }) => {
+    const { title } = navigation.state.params;
+
+    return {
+      title: "Deck: " + title
+    };
+  };
   render() {
     return (
       <View style={styles.container}>
@@ -26,19 +33,23 @@ class Deck extends Component {
             )
           }
         >
-          <Text style={{ fontSize: 20 }}>Add card</Text>
+          <Text style={{ fontSize: 20, color: white }}>Add card</Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          style={[styles.androidBtn, { backgroundColor: red }]}
-          onPress={() =>
-            this.props.navigation.navigate(
-              "Quiz",
-              this.props.navigation.state.params.title
-            )
-          }
-        >
-          <Text style={{ fontSize: 20 }}>Start Quiz</Text>
-        </TouchableOpacity>
+
+        {this.props.decks[this.props.navigation.state.params.title].questions
+          .length > 0 && (
+          <TouchableOpacity
+            style={[styles.androidBtn, { backgroundColor: red }]}
+            onPress={() =>
+              this.props.navigation.navigate(
+                "Quiz",
+                this.props.navigation.state.params.title
+              )
+            }
+          >
+            <Text style={{ fontSize: 20, color: white }}>Start Quiz</Text>
+          </TouchableOpacity>
+        )}
       </View>
     );
   }

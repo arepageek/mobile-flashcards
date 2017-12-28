@@ -10,7 +10,7 @@ import { Constants } from "expo";
 import { TabNavigator, StackNavigator } from "react-navigation";
 import Deck from "./components/Deck";
 import Quiz from "./components/Quiz";
-import { purple } from "./utils/colors";
+import { white, purple } from "./utils/colors";
 function MobileStatusBar({ backgroundColor, ...props }) {
   return (
     <View style={{ backgroundColor, height: Constants.statusBarHeight }}>
@@ -18,32 +18,72 @@ function MobileStatusBar({ backgroundColor, ...props }) {
     </View>
   );
 }
-const Tabs = TabNavigator({
-  DeckList: {
-    screen: DeckList,
-    navigationOptions: {
-      tabBarLabel: "List"
+const Tabs = TabNavigator(
+  {
+    DeckList: {
+      screen: DeckList,
+      navigationOptions: {
+        tabBarLabel: "List"
+      }
+    },
+    AddDeck: {
+      screen: AddDeck,
+      navigationOptions: {
+        tabBarLabel: "New Deck"
+      }
     }
   },
-  AddDeck: {
-    screen: AddDeck,
+  {
     navigationOptions: {
-      tabBarLabel: "New Deck"
+      header: null
+    },
+    tabBarOptions: {
+      activeTintColor: white,
+      style: {
+        height: 56,
+        backgroundColor: purple,
+        shadowColor: "rgba(0,0,0,0.24)",
+        shadowOffset: {
+          width: 0,
+          height: 3
+        },
+        shadowRadius: 6,
+        shadowOpacity: 1
+      }
     }
   }
-});
+);
+
 const MainNavigator = StackNavigator({
   Home: {
     screen: Tabs
   },
   Deck: {
-    screen: Deck
+    screen: Deck,
+    navigationOptions: {
+      headerTintColor: white,
+      headerStyle: {
+        backgroundColor: purple
+      }
+    }
   },
   AddCard: {
-    screen: AddCard
+    screen: AddCard,
+    navigationOptions: {
+      headerTintColor: white,
+      headerStyle: {
+        backgroundColor: purple
+      }
+    }
   },
   Quiz: {
-    screen: Quiz
+    screen: Quiz,
+    navigationOptions: {
+      headerTintColor: white,
+      headerStyle: {
+        backgroundColor: purple
+      }
+    }
   }
 });
 

@@ -12,6 +12,7 @@ import { white, purple } from "../utils/colors";
 import { saveDeckTitle, fetchDecks } from "../utils/api";
 import { connect } from "react-redux";
 import { addDeck } from "../actions";
+import { NavigationAction, NavigationActions } from "react-navigation";
 
 function SubmitBtn({ onPress }) {
   return (
@@ -37,11 +38,28 @@ class AddDeck extends Component {
     const newDeck = {
       [title]: { title: title, questions: [] }
     };
-    saveDeckTitle(newDeck);
-    this.props.dispatch(addDeck(newDeck));
-    this.setState(() => ({
-      title: ""
-    }));
+    this.notEmpty(title)
+      ? saveDeckTitle(newDeck)
+          .then(this.props.dispatch(addDeck(newDeck)))
+          .then(
+            this.setState(() => ({
+              title: ""
+            }))
+          )
+          .then(
+            this.props.navigation.dispatch(
+              NavigationActions.back({
+                key: "AddDeck"
+              })
+            )
+          )
+      : Alert.alert("Bad input", "Deck name cannot be blank");
+  };
+
+  notEmpty = string => {
+    let re = /([^\s])/;
+
+    return re.test(string);
   };
 
   render() {
